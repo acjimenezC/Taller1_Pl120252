@@ -1,2 +1,44 @@
-<h1>Welcome to Home Page, {{name}}</h1>
-<h2>This is the full home page</h2>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>ANYELA JIMENEZ</h1>
+    <form action="">
+        <div class="mb-3">
+            <label for="searchMovie" class="form-label">
+                Search for Movie:
+            </label>
+            <input type="text" class="form-control" name="searchMovie"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <p>Searching for {{searchTerm}}</p>
+    <div class="row">
+        {% for movie in movies %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="{{ movie.image.url }}" class="card-img-top" alt="..." style="height:200px;object-fit:cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.description|truncatechars:120 }}</p>
+                    <p class="card-text"><strong>Género:</strong> {{ movie.genre }}</p>
+                    <p class="card-text"><strong>Año:</strong> {{ movie.year }}</p>
+                    {% if movie.url %}
+                        <a href="{{ movie.url }}" class="btn btn-primary">Movie Link</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <br />
+    <h2>Join our mailing list:</h2>
+    <form action="{% url 'signup' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="email" class="form-label">Enter your email:</label>
+            <input type="email" class="form-control" name="email" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+{% endblock content %}
